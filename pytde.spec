@@ -1,12 +1,12 @@
-#
-# Please submit bugfixes or comments via http://www.trinitydesktop.org/
-#
+%bcond clang 1
 
 # TDE variables
 %define tde_epoch 2
 %if "%{?tde_version}" == ""
 %define tde_version 14.1.5
 %endif
+%define pkg_rel 2
+
 %define tde_pkg pytde
 %define tde_prefix /opt/trinity
 %define tde_bindir %{tde_prefix}/bin
@@ -18,33 +18,23 @@
 %define tde_tdedocdir %{tde_docdir}/tde
 %define tde_tdeincludedir %{tde_includedir}/tde
 
-%if 0%{?mdkversion}
 %undefine __brp_remove_la_files
 %define dont_remove_libtool_files 1
 %define _disable_rebuild_configure 1
-%endif
-
-# fixes error: Empty %files file …/debugsourcefiles.list
-#define _debugsource_template %{nil}
 
 %define tarball_name %{tde_pkg}-trinity
-%global toolchain %(readlink /usr/bin/cc)
 
 
 Name:		trinity-%{tde_pkg}
 Epoch:		%{tde_epoch}
 Version:	3.16.3
-Release:	%{?tde_version}_%{?!preversion:1}%{?preversion:0_%{preversion}}%{?dist}
+Release:	%{?tde_version}_%{?!preversion:%{pkg_rel}}%{?preversion:0_%{preversion}}%{?dist}
 Summary:	Trinity bindings for Python
 Group:		Development/Libraries/Python
 URL:		http://www.trinitydesktop.org/
 #URL:		http://www.simonzone.com/software/pykdeextensions
 
-%if 0%{?suse_version}
-License:	GPL-2.0+
-%else
 License:	GPLv2+
-%endif
 
 #Vendor:		Trinity Desktop
 #Packager:	Francois Andriot <francois.andriot@free.fr>
@@ -61,9 +51,7 @@ BuildRequires:	autoconf automake libtool m4
 BuildRequires:  pkgconfig(x11)
 BuildRequires:  pkgconfig(xext)
 
-%if "%{?toolchain}" != "clang"
-BuildRequires:	gcc-c++
-%endif
+%{!?with_clang:BuildRequires:	gcc-c++}
 
 # PYTHON support
 %if "%{?python}" == "%{nil}"
@@ -96,20 +84,9 @@ from tdeio, tdejs, tdehtml and tdeprint.
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING NEWS README
 %{python_sitearch}/*.so
-%if 0%{?mdkversion} || 0%{?pclinuxos} || 0%{?rhel} == 7 || 0%{?suse_version}
 %{python_sitearch}/dcopexport.py*
 %{python_sitearch}/dcopext.py*
 %{python_sitearch}/pytdeconfig.py*
-%if 0%{?rhel} == 7
-%{python_sitearch}/__pycache__/dcopexport.*.pyc
-%{python_sitearch}/__pycache__/dcopext.*.pyc
-%{python_sitearch}/__pycache__/pytdeconfig.*.pyc
-%endif
-%else
-%pycached %{python_sitearch}/dcopexport.py
-%pycached %{python_sitearch}/dcopext.py
-%pycached %{python_sitearch}/pytdeconfig.py
-%endif
 
 ##########
 
@@ -154,14 +131,6 @@ tips and working code you can use to learn from.
 %files doc
 %defattr(-,root,root,-)
 %{tde_tdedocdir}/HTML/en/pytde/
-
-##########
-
-%if 0%{?suse_version} && 0%{?opensuse_bs} == 0
-%debug_package
-%endif
-
-##########
 
 %prep
 %autosetup -n %{tarball_name}-%{tde_version}%{?preversion:~%{preversion}}
