@@ -5,18 +5,10 @@
 %if "%{?tde_version}" == ""
 %define tde_version 14.1.5
 %endif
-%define pkg_rel 3
+%define pkg_rel 4
 
 %define tde_pkg pytde
 %define tde_prefix /opt/trinity
-%define tde_bindir %{tde_prefix}/bin
-%define tde_datadir %{tde_prefix}/share
-%define tde_docdir %{tde_datadir}/doc
-%define tde_includedir %{tde_prefix}/include
-%define tde_libdir %{tde_prefix}/%{_lib}
-%define tde_mandir %{tde_datadir}/man
-%define tde_tdedocdir %{tde_docdir}/tde
-%define tde_tdeincludedir %{tde_includedir}/tde
 
 %undefine __brp_remove_la_files
 %define dont_remove_libtool_files 1
@@ -36,10 +28,6 @@ URL:		http://www.trinitydesktop.org/
 
 License:	GPLv2+
 
-#Vendor:		Trinity Desktop
-#Packager:	Francois Andriot <francois.andriot@free.fr>
-
-Prefix:		%{tde_prefix}
 
 Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/libraries/%{tarball_name}-%{tde_version}%{?preversion:~%{preversion}}.tar.xz
 
@@ -109,7 +97,7 @@ user interface compiler.
 
 %files devel
 %defattr(-,root,root,-)
-%{tde_bindir}/tdepyuic
+%{tde_prefix}/bin/tdepyuic
 # The SIP files are outside TDE's prefix
 %{_datadir}/sip/trinity/
 
@@ -130,7 +118,7 @@ tips and working code you can use to learn from.
 
 %files doc
 %defattr(-,root,root,-)
-%{tde_tdedocdir}/HTML/en/pytde/
+%{tde_prefix}/share/doc/tde/HTML/en/pytde/
 
 %prep
 %autosetup -n %{tarball_name}-%{tde_version}%{?preversion:~%{preversion}}
@@ -140,8 +128,8 @@ tips and working code you can use to learn from.
 
 %build
 unset QTDIR QTINC QTLIB
-export PATH="%{tde_bindir}:${PATH}"
-export LD_RUN_PATH="%{tde_libdir}"
+export PATH="%{tde_prefix}/bin:${PATH}"
+export LD_RUN_PATH="%{tde_prefix}/%{_lib}"
 
 export DH_OPTIONS
 
@@ -154,10 +142,10 @@ export DH_OPTIONS
 
 
 %install
-export PATH="%{tde_bindir}:${PATH}"
+export PATH="%{tde_prefix}/bin:${PATH}"
 %__make install DESTDIR=%{buildroot}
 
 # Install documentation
-%__mkdir_p %{buildroot}%{tde_tdedocdir}/HTML/en/
-%__cp -rf doc %{buildroot}%{tde_tdedocdir}/HTML/en/pytde/
+%__mkdir_p %{buildroot}%{tde_prefix}/share/doc/tde/HTML/en/
+%__cp -rf doc %{buildroot}%{tde_prefix}/share/doc/tde/HTML/en/pytde/
 
