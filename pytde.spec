@@ -41,6 +41,8 @@ BuildRequires:  pkgconfig(xext)
 
 %{!?with_clang:BuildRequires:	gcc-c++}
 
+BuildRequires:  make
+
 # PYTHON support
 %if "%{?python}" == "%{nil}"
 %global python python3
