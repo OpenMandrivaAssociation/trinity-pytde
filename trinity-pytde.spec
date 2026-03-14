@@ -5,7 +5,6 @@
 %if "%{?tde_version}" == ""
 %define tde_version 14.1.5
 %endif
-%define pkg_rel 4
 
 %define tde_pkg pytde
 %define tde_prefix /opt/trinity
@@ -20,7 +19,7 @@
 Name:		trinity-%{tde_pkg}
 Epoch:		%{tde_epoch}
 Version:	3.16.3
-Release:	%{?tde_version}_%{?!preversion:%{pkg_rel}}%{?preversion:0_%{preversion}}%{?dist}
+Release:	%{?tde_version:%{tde_version}_}5
 Summary:	Trinity bindings for Python
 Group:		Development/Libraries/Python
 URL:		http://www.trinitydesktop.org/
@@ -28,8 +27,7 @@ URL:		http://www.trinitydesktop.org/
 
 License:	GPLv2+
 
-
-Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/libraries/%{tarball_name}-%{tde_version}%{?preversion:~%{preversion}}.tar.xz
+Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/libraries/%{tarball_name}-%{tde_version}.tar.xz
 
 BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
 
@@ -60,11 +58,6 @@ Requires:		pytqt
 BuildRequires:	sip4-tqt-devel >= 4.10.5
 Requires:		sip4-tqt >= 4.10.5
 
-Obsoletes:	python-trinity < %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:	python-trinity = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes:	trinity-python-trinity < %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:	trinity-python-trinity = %{?epoch:%{epoch}:}%{version}-%{release}
-
 %description
 Python binding module that provides wide access to the Trinity API,
 also known as PyTDE. Using this, you'll get (for example) classes
@@ -85,11 +78,6 @@ Summary:	Trinity bindings for Python - Development files and scripts
 Group:		Development/Libraries/Python
 Requires:	%{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 
-Obsoletes:	python-trinity-devel < %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:	python-trinity-devel = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes:	trinity-python-trinity-devel < %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:	trinity-python-trinity-devel = %{?epoch:%{epoch}:}%{version}-%{release}
-
 %description devel
 Development .sip files with definitions of PyTDE classes. They
 are needed to build PyTDE, but also as building blocks of other
@@ -109,11 +97,6 @@ user interface compiler.
 Summary:	Documentation and examples for PyTDE
 Group:		Development/Libraries/Python
 
-Obsoletes:	python-trinity-doc < %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:	python-trinity-doc = %{?epoch:%{epoch}:}%{version}-%{release}
-Obsoletes:	trinity-python-trinity-doc < %{?epoch:%{epoch}:}%{version}-%{release}
-Provides:	trinity-python-trinity-doc = %{?epoch:%{epoch}:}%{version}-%{release}
-
 %description doc
 General documentation and examples for PyTDE providing programming
 tips and working code you can use to learn from.
@@ -123,7 +106,7 @@ tips and working code you can use to learn from.
 %{tde_prefix}/share/doc/tde/HTML/en/pytde/
 
 %prep
-%autosetup -n %{tarball_name}-%{tde_version}%{?preversion:~%{preversion}}
+%autosetup -n %{tarball_name}-%{tde_version}
 
 %__sed -i "contrib/tdepyuic" -e "s|/usr/bin/env python|/usr/bin/env python3|"
 
