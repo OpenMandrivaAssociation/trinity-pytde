@@ -76,7 +76,7 @@ from tdeio, tdejs, tdehtml and tdeprint.
 %package devel
 Summary:	Trinity bindings for Python - Development files and scripts
 Group:		Development/Libraries/Python
-Requires:	%{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:	%{name} = %{EVRD}
 
 %description devel
 Development .sip files with definitions of PyTDE classes. They
