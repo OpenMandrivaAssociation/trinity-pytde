@@ -27,6 +27,8 @@ License:	GPLv2+
 Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/libraries/%{tarball_name}-%{tde_version}.tar.xz
 
 BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
+BuildRequires:  pkgconfig(tqt-mt)
+BuildRequires:  pkgconfig(tqt)
 
 BuildRequires:	desktop-file-utils
 BuildRequires:	gettext
