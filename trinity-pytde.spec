@@ -1,10 +1,6 @@
 %bcond clang 1
 
 # TDE variables
-%if "%{?tde_version}" == ""
-%define tde_version 14.1.5
-%endif
-
 %define tde_pkg pytde
 %define tde_prefix /opt/trinity
 
@@ -15,8 +11,8 @@
 %define tarball_name %{tde_pkg}-trinity
 
 Name:		trinity-%{tde_pkg}
-Version:	3.16.3
-Release:	%{?tde_version:%{tde_version}_}5
+Version:	14.1.6
+Release:	1
 Summary:	Trinity bindings for Python
 Group:		Development/Libraries/Python
 URL:		http://www.trinitydesktop.org/
@@ -24,9 +20,9 @@ URL:		http://www.trinitydesktop.org/
 
 License:	GPLv2+
 
-Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/libraries/%{tarball_name}-%{tde_version}.tar.xz
+Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{version}/main/libraries/%{tarball_name}-%{version}.tar.xz
 
-BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
+BuildRequires:	trinity-tdelibs-devel >= %{version}
 BuildRequires:  pkgconfig(tqt-mt)
 BuildRequires:  pkgconfig(tqt)
 
@@ -54,8 +50,8 @@ BuildRequires:	pytqt-devel
 Requires:		pytqt
 
 # SIP
-BuildRequires:	sip4-tqt-devel >= 4.10.5
-Requires:		sip4-tqt >= 4.10.5
+BuildRequires:	sip4-tqt-devel >= %{version}
+Requires:		sip4-tqt >= %{version}
 
 %description
 Python binding module that provides wide access to the Trinity API,
@@ -105,7 +101,7 @@ tips and working code you can use to learn from.
 %{tde_prefix}/share/doc/tde/HTML/en/pytde/
 
 %prep
-%autosetup -n %{tarball_name}-%{tde_version}
+%autosetup -n %{tarball_name}-%{version}
 
 %__sed -i "contrib/tdepyuic" -e "s|/usr/bin/env python|/usr/bin/env python3|"
 
