@@ -12,7 +12,7 @@
 
 Name:		trinity-%{tde_pkg}
 Version:	14.1.6
-Release:	1
+Release:	2
 Summary:	Trinity bindings for Python
 Group:		Development/Libraries/Python
 URL:		http://www.trinitydesktop.org/
@@ -46,12 +46,13 @@ BuildRequires:	%{python}
 BuildRequires:	%{python}-devel
 %endif
 
-BuildRequires:	pytqt-devel
-Requires:		pytqt
+# 14.1.6-1 is the Python 3.14 module.
+BuildRequires:	pytqt-devel >= %{version}-2
+Requires:		pytqt >= %{version}-2
 
 # SIP
-BuildRequires:	sip4-tqt-devel >= %{version}
-Requires:		sip4-tqt >= %{version}
+BuildRequires:	sip4-tqt-devel >= %{version}-2
+Requires:		sip4-tqt >= %{version}-2
 
 %description
 Python binding module that provides wide access to the Trinity API,
